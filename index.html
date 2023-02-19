@@ -1,10 +1,159 @@
 <!DOCTYPE html>
-<html lang="en" dir="ltr">
-  <head>
-    <meta charset="utf-8">
-    <title>trial</title>
-  </head>
-  <body>
-    <h1>Elementrix 2030</h1>
-  </body>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+       <title>rcm</title>
+    <style>
+        body{
+            margin: 0;
+            font-family: Arial;
+            height: 100vh;
+        }
+        .top-container{
+            text-align: center;
+            box-shadow: 0 0 5px 0 rgba(0,0,0,0.1);
+            padding: 20px 15px;
+            font-weight: bold;
+            background: #CD0404;
+            color: white;
+        }
+        .top-container h2{
+            margin: 5px 0;
+        }
+        .top-container h3{
+            margin: 5px 0;
+        }
+        .patient{
+            text-align: center;
+            width: 70%;
+            margin: 20px auto;
+            background: #DEFCF9;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 3px 3px 0 rgba(0,0,0,0.3);
+        }
+        .patient-info{
+            display: flex;
+            margin: 5px;
+            justify-content: space-evenly;
+        }
+        hr{
+            background: #CD0404;
+            height: 3px;
+            width: 80%;
+        }
+
+        .data{
+            display: flex;
+            width: 80%;
+            margin: 20px auto;
+            justify-content: space-between;
+        }
+        .ecg{
+            width: 60%;
+            text-align: center;
+            height: 300px;
+        }
+        .rate{
+            width: 35%;
+            border-radius: 8px;
+            box-shadow: 0 3px 5px 0 rgba(0,0,0,0.1);
+            text-align: center;
+            padding: 10px;
+            height: 200px;
+        }
+        #heart_rate{
+            font-size: 90px;
+            margin: 10px;
+        }
+        #canvas{
+            background-color: black;
+            border-radius: 10px;
+        }
+
+    </style>
+</head>
+<body>
+    <div class="top-container">
+        <div>
+            <h2>Smart Cardiac hospital</h2>
+            <h3>Remote cardiac monitoring system</h3>
+        </div>
+    </div>
+    <div class="patient">
+        <h4>Patient information</h4>
+        <hr>
+        <div class="patient-info">
+            <h5><span>NAME:</span> BJORN IVAR </h5>
+            <h5><span>ID:</span> RCM22091999 </h5>
+            <h5><span>SEX:</span> MALE </h5>
+            <h5><span>CONTACT:</span> +255757657612 </h5>
+
+        </div>
+    </div>
+    <div class="data">
+        <div class="ecg">
+            <canvas id="canvas" width="500" height="300" ></canvas>
+        </div>
+        <div class="rate">
+            <p>Heart rate (Bpm)</p>
+            <h1 id="heart_rate"> 00</h1>
+        </div>
+    </div>
+    <script src="/socket.io/socket.io.js"></script>
+  <script>
+
+        var socket = io();
+
+        socket.on('data', function(data) {
+            console.log(data);
+            document.getElementById("heart_rate").innerHTML = data;
+            if(60<=data<=100){
+                document.getElementById("heart_rate").style.color = "green"
+            }
+            if (data>100){
+                document.getElementById("heart_rate").style.color = "red"
+            }
+            if(data<60){
+                document.getElementById("heart_rate").style.color = "blue"
+            }
+        });
+
+        const canvas = document.getElementById("canvas");
+        const ctx = canvas.getContext("2d");
+        ctx.fillStyle = "#dbbd7a";
+        ctx.fill();
+
+        var fps = 60;
+        var n = 1;
+
+
+        const data = [
+            126, 126, 126, 126, 126, 126, 126, 126, 126, 127, 127, 127, 126, 126, 126, 127, 126, 126, 127, 127, 126, 126, 126, 127, 127, 127, 127, 127, 127, 126, 127, 127, 126, 127, 126, 127, 127, 127, 127, 127, 127, 127, 127, 127, 127, 127, 127, 127, 127, 127, 127, 127, 127, 127, 127, 127, 127, 128, 128, 129, 129, 129, 129, 128, 127, 127, 126, 126, 126, 126, 126, 127, 126, 126, 127, 129, 131, 134, 250, 57, 136, 131, 127, 127, 127, 128, 127, 128, 128, 128, 128, 128, 128, 129, 129, 129, 129, 130, 130, 131, 131, 131, 132, 133, 133, 133, 133, 133, 131, 130, 128, 127, 126, 126, 125, 125, 126, 125, 125, 125, 125, 126, 126, 126, 126, 126, 126, 127, 127, 127, 127, 127, 127, 127, 126, 127, 127, 126, 126, 126, 126, 126, 126, 126, 126, 126, 127, 126, 126, 126, 127, 127, 127, 127, 127, 126, 127, 127, 127, 127, 127, 128, 129, 129, 129, 129, 128, 128,
+            126, 126, 126, 126, 126, 125, 126, 126, 126, 128, 129, 131, 136, 250, 57, 134, 130, 128, 127, 127, 128, 128, 128, 128, 128, 128, 128, 128, 130, 129, 130, 130, 131, 131, 132, 133, 133, 133, 133, 133, 132, 130, 129, 128, 127, 126, 125, 125, 125, 125, 125, 125, 126, 126, 126, 126, 126, 126, 126, 127, 127, 127, 127, 126, 127, 126, 126, 126, 126, 126, 127, 127, 127, 127, 127, 127, 127, 127, 126, 127, 127, 126, 127, 127, 127, 127, 127, 127, 127, 127, 127, 128, 129, 129, 130, 129, 129, 129, 128, 127, 126, 126, 126, 126, 126, 126, 126, 126, 127, 129, 131, 135, 250, 56, 136, 130, 127, 126, 127, 127, 128, 128, 128, 128, 129, 129, 129, 128, 129, 129, 129, 129, 129, 130, 131, 131, 132, 133, 133, 133, 133, 132, 131, 129, 128, 127, 126, 125, 125, 125, 125, 124, 125, 125, 125, 125, 125, 125, 126, 125, 126, 126, 126, 126, 127, 126, 126, 126, 126, 126, 126, 126, 126, 126, 126, 125, 126, 126, 126, 126, 126, 126, 126, 126, 126, 126, 127, 126, 126, 127, 128, 127, 129, 129, 129, 128, 128, 126, 126, 126, 126, 125, 126, 125, 126, 126, 126, 128, 130, 131, 136, 250, 56, 133, 127, 126, 126, 127, 128, 127, 128, 128, 128, 128, 128, 128, 129, 130, 130, 130, 130, 132, 132, 133, 133, 133, 132, 131, 130, 129, 127, 126, 126, 125, 124, 125, 125, 125, 125, 125, 125, 125, 125, 126, 126, 126, 126, 126, 126, 127, 126, 127, 127, 127, 126, 126, 126, 126, 126, 126, 126, 126, 126, 126, 126, 127, 126, 126, 126, 126, 126, 126, 126, 127, 127, 128, 128, 129, 128, 128, 126, 126, 125, 125, 125, 125, 125, 125, 125, 126, 126, 128, 129, 133, 134, 250, 57, 131, 128, 127, 126, 127, 127, 127, 127, 128, 128, 128, 128, 128, 128, 128, 128, 129, 129, 130, 130, 131, 131, 132, 132, 133, 132, 132, 130, 129, 128, 126, 125, 125, 125, 125, 125, 125, 125, 124, 125, 125, 126, 126, 126, 126, 126, 126, 126, 126, 127, 127, 127, 126, 126, 126,]
+
+        drawWave();
+
+        function drawWave() {
+            setTimeout(function() {
+                requestAnimationFrame(drawWave);
+                ctx.lineWidth = "2";
+                   ctx.strokeStyle = 'green';
+
+                // Drawing code goes here
+                n += 1;
+                if (n >= data.length) {
+                    n = 1;
+                }
+                ctx.beginPath();
+                ctx.moveTo(n - 1, data[n - 1]);
+                ctx.lineTo(n, data[n]);
+                ctx.stroke();
+
+                ctx.clearRect(n+1, 0, 10, canvas.height);
+
+                }, 1000 / fps);
+            }
+  </script>
+</body>
 </html>
