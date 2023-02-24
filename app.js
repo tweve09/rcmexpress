@@ -33,18 +33,22 @@ const {Server} = require("socket.io");
 const io = new Server(server);
 
 app.get("/", (req,res)=>{
-  db.query("SELECT * FROM health_data", (error, data)=>{
-    if(error){
-      console.log(error);
-    }else{
-      console.log(data);
-    }
-  })
   res.sendFile(__dirname+"/index.html");
 })
 
-app.get("/dashboard", (req, res)=>{
-  res.render("dashboard", {name: "Emmanuel"});
+app.get("/data", (req, res)=>{
+  db.query("SELECT * FROM health_data", (error, result)=>{
+    if(error){
+      console.log("Error in fetching data from database");
+    }else{
+      console.log("Data fetched succefully");
+      res.render("dashboard", {result: result});
+    }
+  });
+})
+
+app.get("/trial", (req, res)=>{
+  res.render("trial")
 })
 
 io.on("connection", (socket)=>{

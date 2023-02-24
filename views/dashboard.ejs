@@ -3,16 +3,94 @@
   <head>
     <meta charset="utf-8">
     <title>Remote cardiac monitoring system</title>
+    <style media="screen">
+      body{
+          margin: 0;
+          font-family: Arial;
+          height: 100vh;
+      }
+      .top-container{
+          text-align: center;
+          box-shadow: 0 0 5px 0 rgba(0,0,0,0.1);
+          padding: 20px 15px;
+          font-weight: bold;
+          background: #CD0404;
+          color: white;
+        }
+      .top-container h2{
+          margin: 5px 0;
+        }
+      .top-container h3{
+        margin: 5px 0;
+      }
+      .data{
+        text-align: center;
+      }
+      table{
+        text-align: center;
+        border-collapse: collapse;
+      }
+      th{
+        height: 35px;
+      }
+
+      th,td{
+        padding: 20px;
+      }
+      #floating-button {
+        position: fixed;
+        bottom: 20px;
+        right: 20px;
+      }
+
+      a{
+        text-decoration: none;
+      }
+      button{
+        padding: 15px;
+        cursor: pointer;
+        background: #CD0404;
+        border: none;
+        border-radius: 6px;
+        margin-top: 10px;
+        width: 80%;
+        color: white;
+        font-size: 20px;
+        box-shadow: 0 8px 10px 0 rgba(0, 0, 0, 0.3);
+      }
+      button:hover{
+        background: rgb(245, 115, 115);
+      }
+    </style>
   </head>
   <body>
-    <h3>Ejs tamplate dashboard</h3>
-    <h5><%= name %></h5>
-    <script src="/socket.io/socket.io.js"></script>
-    <script type="text/javascript">
-      var socket = io();
-      socket.on("data", (data)=>{
-        console.log(data);
-      });
-    </script>
+    <div class="top-container">
+        <div>
+            <h2>Smart Cardiac hospital</h2>
+            <h3>Remote cardiac monitoring system</h3>
+        </div>
+    </div>
+    <div class="data">
+      <h2>Health data from the patient</h2>
+      <table border="1" align="center">
+        <thead>
+          <tr>
+            <th>id</th>
+            <th>Heart rate(Bpm)</th>
+            <th>Time stamp</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% result.forEach(function(result) { %>
+            <tr>
+              <td><%= result.id %></td>
+              <td><%= result.heart_rate %></td>
+              <td><%= result.created_at %></td>
+            </tr>
+          <% }); %>
+        </tbody>
+      </table>
+      <a id="floating-button" href="/"><button type="button" name="button">Return to Homepage</button></a>
+    </div>
   </body>
 </html>

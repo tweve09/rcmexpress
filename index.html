@@ -56,11 +56,31 @@
         }
         .rate{
             width: 35%;
-            border-radius: 8px;
-            box-shadow: 0 3px 5px 0 rgba(0,0,0,0.1);
             text-align: center;
             padding: 10px;
-            height: 200px;
+        }
+        .rate-data{
+          box-shadow: 0 4px 4px 0 rgba(0, 0, 0, 0.1);
+          border-radius: 8px;
+          margin-bottom: 10px;
+          padding: 10px;
+        }
+        a{
+          text-decoration: none;
+        }
+        button{
+          padding: 15px;
+          cursor: pointer;
+          background: #CD0404;
+          border: none;
+          border-radius: 6px;
+          margin-top: 10px;
+          width: 80%;
+          color: white;
+          font-size: 20px;
+        }
+        button:hover{
+          background: rgb(245, 115, 115);;
         }
         #heart_rate{
             font-size: 90px;
@@ -96,8 +116,11 @@
             <canvas id="canvas" width="500" height="300" ></canvas>
         </div>
         <div class="rate">
-            <p>Heart rate (Bpm)</p>
-            <h1 id="heart_rate"> 00</h1>
+            <div class="rate-data">
+              <p>Heart rate (Bpm)</p>
+              <h1 id="heart_rate"> 00</h1>
+            </div>
+            <a href="/data"><button type="button" name="button">view records</button></a>
         </div>
     </div>
     <script src="/socket.io/socket.io.js"></script>
