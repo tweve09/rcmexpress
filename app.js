@@ -47,6 +47,28 @@ app.get("/data", (req, res)=>{
   });
 })
 
+app.get("/data/low", (req, res)=>{
+  db.query("SELECT * FROM health_data WHERE heart_rate < 60", (error, result)=>{
+    if(error){
+      console.log("Error in fetching data from database");
+    }else {
+      console.log("Data fetched succefully");
+      res.render("bradycardia", {result: result});
+    }
+  });
+});
+
+app.get("/data/high", (req, res)=>{
+  db.query("SELECT * FROM health_data WHERE heart_rate > 100", (error, result)=>{
+    if(error){
+      console.log("Error in fetching data from database");
+    }else {
+      console.log("Data fetched succefully");
+      res.render("tachycardia", {result: result});
+    }
+  });
+});
+
 app.get("/trial", (req, res)=>{
   res.render("trial")
 })
@@ -57,6 +79,30 @@ io.on("connection", (socket)=>{
     console.log("User disconnected");
   })
 });
+
+
+/*
+// create a pdf form
+const PDFDocument = require('pdfkit');
+const fs = require('fs')
+const doc = new PDFDocument();
+
+app.get('/generate-pdf', (req, res) => {
+  db.query("SELECT * FROM health_data", (error, result)=>{
+    if(error){
+      console.log(error);
+    }else {
+      doc.pipe(fs.createWriteStream('output.pdf'));
+      const html = res.render('dashboard', { result: result });
+      doc.text(html);
+      doc.end();
+      res.download('output.pdf');
+    }
+  });
+});
+
+*/
+
 
 parser.on('data', (data) => {
   console.log(data);
